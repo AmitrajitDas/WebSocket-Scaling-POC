@@ -1,11 +1,17 @@
 import http from "http";
 import SocketService from "./services/socket";
+import dotenv from "dotenv";
 
-const init = (async () => {
-  const htttpServer = http.createServer();
-  const PORT = process.env.PORT ? process.env.PORT : 8000;
+dotenv.config();
 
-  const socketService = new SocketService();
+const init = (async (): Promise<void> => {
+  const htttpServer: http.Server<
+    typeof http.IncomingMessage,
+    typeof http.ServerResponse
+  > = http.createServer();
+  const PORT: string | number = process.env.PORT ? process.env.PORT : 8000;
+
+  const socketService: SocketService = new SocketService();
   socketService.io.attach(htttpServer);
 
   htttpServer.listen(PORT, () =>
