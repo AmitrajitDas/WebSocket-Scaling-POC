@@ -11,4 +11,6 @@ const init = (async () => {
   htttpServer.listen(PORT, () =>
     console.log(`HTTP server started at PORT:${PORT}`)
   );
+
+  socketService.initListeners();
 })();
