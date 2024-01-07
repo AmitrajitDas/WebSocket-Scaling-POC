@@ -1,0 +1,22 @@
+{
+  "name": "scalable-chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index",
+    "build": "tsc -p .",
+    "dev": "tsc-watch --onSuccess \"node dist/index\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "socket.io": "^4.7.3"
+  }
+}
