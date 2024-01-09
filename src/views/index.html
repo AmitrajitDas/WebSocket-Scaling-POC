@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket.io Client</title>
+  </head>
+  <body>
+    <h1>Socket.io Client</h1>
+
+    <form id="messageForm">
+      <input type="text" id="messageInput" placeholder="Type your message" />
+      <button type="submit">Send</button>
+    </form>
+
+    <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
+    <script>
+      const socket = io("http://localhost:8000"); // Connect to the socket server
+
+      const messageForm = document.getElementById("messageForm");
+      const messageInput = document.getElementById("messageInput");
+
+      messageForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const message = messageInput.value;
+        socket.emit("event:message", { message });
+        messageInput.value = "";
+      });
+
+      socket.on("message", (data) => {
+        const message = JSON.parse(data).message;
+        console.log("Received message:", message);
+      });
+    </script>
+  </body>
+</html>
