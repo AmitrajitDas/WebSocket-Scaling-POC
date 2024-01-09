@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import Redis from "ioredis";
 import dotenv from "dotenv";
+import { produceMessage } from "./kafka";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ class SocketService {
         origin: "*",
       },
     });
+    // subscribe to MESSAGES channel
     sub.subscribe("MESSAGES");
   }
 
@@ -47,17 +49,22 @@ class SocketService {
       socket.on("event:message", async ({ message }: { message: string }) => {
         console.log(`New message recieved: ${message}`);
         // publish the message to redis
-        pub.publish("MESSAGES", JSON.stringify({ message }));
+        pub.publish("MESSAGES", JSON.stringify(message));
       });
 
-      sub.on("message", (channel: string, message: string) => {
-        if (channel === "MESSAGES") {
-          console.log(
-            `New message from redis: ${message} from channel: ${channel}`
-          );
-          io.emit("message", message);
+      sub.on(
+        "message",
+        async (channel: string, message: string): Promise<void> => {
+          if (channel === "MESSAGES") {
+            console.log(
+              `New message from redis: ${message} from channel: ${channel}`
+            );
+            io.emit("message", message);
+            await produceMessage(message);
+            console.log("Message produced to Kafka broker");
+          }
         }
-      });
+      );
     });
   }
 }
