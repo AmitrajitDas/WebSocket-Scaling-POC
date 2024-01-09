@@ -1,10 +1,12 @@
 import http from "http";
 import SocketService from "./services/socket";
 import dotenv from "dotenv";
+import { consumeMessages } from "./services/kafka";
 
 dotenv.config();
 
 const init = (async (): Promise<void> => {
+  consumeMessages();
   const htttpServer: http.Server<
     typeof http.IncomingMessage,
     typeof http.ServerResponse
