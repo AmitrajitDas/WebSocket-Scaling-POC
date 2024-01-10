@@ -61,6 +61,11 @@ The WebSocket server can be horizontally scaled by deploying multiple instances.
     ```bash
     npm start
     ```
+4. Or you can spin up a docker container using:
+
+    ```bash
+    docker compose up
+    ```
 
 ## Conclusion
 
